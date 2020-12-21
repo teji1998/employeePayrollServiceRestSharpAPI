@@ -126,5 +126,20 @@ namespace EmployeePayrollRestSharpMSTest
             Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
             Assert.AreEqual(dataResponse.salary, "700000");
         }
+
+        /// <summary>
+        /// Given the details when deleted employee should return ok status.
+        /// </summary>
+        [TestMethod]
+        public void givenDetails_WhenDeletedEmployee_ShouldReturnOKStatus()
+        {
+            //arrange
+            //to delete a particular employee
+            RestRequest request = new RestRequest("/Employee/17", Method.DELETE);
+            //act
+            IRestResponse response = client.Execute(request);
+            //assert
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+        }
     }
 }
