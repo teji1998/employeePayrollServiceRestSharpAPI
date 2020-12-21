@@ -20,6 +20,10 @@ namespace EmployeePayrollRestSharpMSTest
             client = new RestClient("http://localhost:4000");
         }
 
+        /// <summary>
+        /// Gets the employee list.
+        /// </summary>
+        /// <returns></returns>
         private IRestResponse getEmployeeList()
         {
             //arrange
@@ -29,6 +33,9 @@ namespace EmployeePayrollRestSharpMSTest
             return response;
         }
 
+        /// <summary>
+        /// Givens the details when called the get API should return employee list.
+        /// </summary>
         [TestMethod]
         public void givenDetails_WhenCalledTheGetAPI_ShouldReturnEmployeeList()
         {
@@ -45,6 +52,9 @@ namespace EmployeePayrollRestSharpMSTest
 
         }
 
+        /// <summary>
+        /// Given the details when called the post API should add the employee and return employee list.
+        /// </summary>
         [TestMethod]
         public void givenDetails_WhenCalledThePostAPI_ShouldAddTheEmployeeAndReturnEmployeeList()
         {
@@ -65,6 +75,9 @@ namespace EmployeePayrollRestSharpMSTest
             Assert.AreEqual("80000", dataResponse.salary);
         }
 
+        /// <summary>
+        /// Given employees when added multiple employees on post should return added employee.
+        /// </summary>
         [TestMethod]
         public void givenEmployees_WhenAddedMultipleEmployeesOnPost_ShouldReturnAddedEmployee()
         {
