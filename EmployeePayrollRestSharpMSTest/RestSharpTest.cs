@@ -35,6 +35,7 @@ namespace EmployeePayrollRestSharpMSTest
             //assert
             IRestResponse response = getEmployeeList();
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            //deserializing the object
             List<Employee> dataResponse = JsonConvert.DeserializeObject<List<Employee>>(response.Content);
             Assert.AreEqual(10, dataResponse.Count);
             foreach (Employee employee in dataResponse)
@@ -58,9 +59,34 @@ namespace EmployeePayrollRestSharpMSTest
             IRestResponse response = client.Execute(request);
             //assert
             Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+            //deserializing the object
             Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
             Assert.AreEqual("Liam", dataResponse.name);
             Assert.AreEqual("80000", dataResponse.salary);
+        }
+
+        [TestMethod]
+        public void givenEmployees_WhenAddedMultipleEmployeesOnPost_ShouldReturnAddedEmployee()
+        {
+            List<Employee> employees = new List<Employee>();
+            employees.Add(new Employee { name = "Minho", salary = "50000" });
+            employees.Add(new Employee { name = "Minhee", salary = "60000" });
+            foreach (Employee employee in employees)
+            {
+                //arrange
+                RestRequest request = new RestRequest("/Employee", Method.POST);
+                JObject jObjectbody = new JObject();
+                jObjectbody.Add("name", employee.name);
+                jObjectbody.Add("salary", employee.salary);
+                request.AddParameter("application/json", jObjectbody, ParameterType.RequestBody);
+                //act
+                IRestResponse response = client.Execute(request);
+                //assert
+                Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+                //deserializing the object
+                Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+                Assert.AreEqual(employee.name, dataResponse.name);
+            }
         }
     }
 }
