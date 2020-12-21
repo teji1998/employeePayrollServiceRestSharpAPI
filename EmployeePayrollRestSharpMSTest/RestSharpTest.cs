@@ -44,7 +44,7 @@ namespace EmployeePayrollRestSharpMSTest
             Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
             //deserializing the object
             List<Employee> dataResponse = JsonConvert.DeserializeObject<List<Employee>>(response.Content);
-            Assert.AreEqual(10, dataResponse.Count);
+            Assert.AreEqual(13, dataResponse.Count);
             foreach (Employee employee in dataResponse)
             {
                 Console.WriteLine("Id:" + employee.id + "\nName:" + employee.name + "\nSalary:" + employee.salary);
@@ -60,6 +60,7 @@ namespace EmployeePayrollRestSharpMSTest
         {
             //arrange
             RestRequest request = new RestRequest("/Employee", Method.POST);
+            //creating JSON object
             JObject jObjectbody = new JObject();
             jObjectbody.Add("name", "Liam");
             jObjectbody.Add("salary", "80000");
@@ -88,6 +89,7 @@ namespace EmployeePayrollRestSharpMSTest
             {
                 //arrange
                 RestRequest request = new RestRequest("/Employee", Method.POST);
+                //creating Jobject
                 JObject jObjectbody = new JObject();
                 jObjectbody.Add("name", employee.name);
                 jObjectbody.Add("salary", employee.salary);
@@ -100,6 +102,29 @@ namespace EmployeePayrollRestSharpMSTest
                 Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
                 Assert.AreEqual(employee.name, dataResponse.name);
             }
+        }
+
+        /// <summary>
+        /// Given the details when updated the employee should return updated employee details.
+        /// </summary>
+        [TestMethod]
+        public void givenDetails_WhenUpdatedTheEmployee_ShouldReturnUpdatedEmployeeDetails()
+        {
+            //arrange
+            //For a particular person updation
+            RestRequest request = new RestRequest("/Employee/14", Method.PUT);
+           //Jobject creation
+            JObject jObjectBody = new JObject();
+            jObjectBody.Add("name", "Teju");
+            jObjectBody.Add("salary", "700000");
+            request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
+            //act
+            IRestResponse response = client.Execute(request);
+           //assert
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
+            //deserializing an object
+            Employee dataResponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual(dataResponse.salary, "700000");
         }
     }
 }
